@@ -6,4 +6,5 @@ const authcontrole = require("../controlers/auth.controlers");
 
 router.post("/register", authcontrole.registeruser);
 router.post("/login", authcontrole.loginuser);
+router.post("/logout", authcontrole.logoutuser);
 module.exports = router;
