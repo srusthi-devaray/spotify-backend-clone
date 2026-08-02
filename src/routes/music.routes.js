@@ -30,4 +30,10 @@ router.get(
   musiccontroller.albumbyid,
 );
 
+router.delete(
+  "/upload/:deletebyid",
+  authmiddleware.authartist,
+  musiccontroller.deletemusicbyid,
+);
+
 module.exports = router;

@@ -1,5 +1,6 @@
 const usermodel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 async function registeruser(req, res) {
   const { username, email, password, role = "user" } = req.body;
@@ -12,12 +13,11 @@ async function registeruser(req, res) {
     });
   }
 
-  //   const hashpassword = await bcrypt.hash(password, 10);
-  // always we need to save hashpassword in our database
+  const hashedPassword = await bcrypt.hash(password, 10);
   const user = await usermodel.create({
     username,
     email,
-    password,
+    password: hashedPassword,
     role,
   });
   const token = jwt.sign(
@@ -33,9 +33,34 @@ async function registeruser(req, res) {
 }
 
 async function loginuser(req, res) {
-  const { username, email, password } = req.body;
-  const user = await usermodel.findOne({ $or: [{ username }, { email }] });
+  console.log(req.body);
+  const { username, email, password, identifier } = req.body;
+  const lookup = (identifier || username || email || "").trim();
+  console.log("lookup =", lookup);
+
+  if (!lookup || !password) {
+    return res.status(401).json({
+      message: "invalid user credentials",
+    });
+  }
+
+  const user = await usermodel.findOne({
+    $or: [
+      { username: { $regex: `^${lookup}$`, $options: "i" } },
+      { email: { $regex: `^${lookup}$`, $options: "i" } },
+    ],
+  });
+  console.log("user =", user);
   if (!user) {
+    return res.status(401).json({
+      message: "invalid user credentials",
+    });
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  console.log("password valid =", isPasswordValid);
+
+  if (!isPasswordValid) {
     return res.status(401).json({
       message: "invalid user credentials",
     });
@@ -83,4 +108,28 @@ async function logoutuser(req, res) {
     message: "user logged out successfully",
   });
 }
-module.exports = { registeruser, loginuser, logoutuser };
+
+async function currentuser(req, res) {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.status(401).json({ message: "unauthorized" });
+  }
+
+  try {
+    const decoded = jwt.verify(
+      token,
+      "f7ab7ea2c5d715c8f9d579fcf28fe947676db5234e391361b1decd5ef4e2539c",
+    );
+    const user = await usermodel
+      .findById(decoded.id)
+      .select("username email role");
+    if (!user) {
+      return res.status(404).json({ message: "user not found" });
+    }
+
+    return res.status(200).json({ user });
+  } catch (err) {
+    return res.status(401).json({ message: "unauthorized" });
+  }
+}
+module.exports = { registeruser, loginuser, logoutuser, currentuser };

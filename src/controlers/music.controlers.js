@@ -82,10 +82,38 @@ async function albumbyid(req, res) {
     album: album,
   });
 }
+
+async function deletemusicbyid(req, res) {
+  try {
+    const deleteid = req.params.deletebyid;
+    const music = await musicmodel.findById(deleteid);
+    if (!music) {
+      return res.status(404).json({
+        message: "this music doesnot exists",
+      });
+    }
+    if (music.artist.toString() !== req.user.id) {
+      return res.status(403).json({
+        message: "you dont have a access to delete this music",
+      });
+    }
+    await musicmodel.findByIdAndDelete(deleteid);
+
+    return res.status(200).json({
+      message: "this music has been deleted",
+    });
+  } catch (err) {
+    return res.status(500).json({
+      message: "internal server error",
+    });
+  }
+}
+
 module.exports = {
   createmusic,
   createalbum,
   getallmusic,
   getallalbum,
   albumbyid,
+  deletemusicbyid,
 };
