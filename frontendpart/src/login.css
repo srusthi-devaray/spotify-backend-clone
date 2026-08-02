@@ -1,0 +1,79 @@
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #fff;
+  background: #121212;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #121212;
+  color: #fff;
+}
+
+a {
+  color: inherit;
+}
+
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background: radial-gradient(1200px 600px at 10% 10%, rgba(29,185,84,0.06), transparent 8%),
+              linear-gradient(180deg, #0f0f0f 0%, #0b0b0b 100%);
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(180deg, rgba(20,20,20,0.95), rgba(10,10,10,0.9));
+  padding: 36px 32px;
+  border-radius: 14px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.auth-form input,
+.auth-form select,
+.auth-form button {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.03);
+  color: #e6f0ea;
+}
+
+.auth-form button {
+  background: linear-gradient(180deg,#1db954,#14a34a);
+  border: none;
+  color: #06130a;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(29,185,84,0.18);
+}
+
+.auth-form button:hover {
+  transform: translateY(-1px);
+  opacity: 0.98;
+}
+
+.auth-form h2 {
+  margin: 0 0 6px 0;
+  color: #fff;
+  font-size: 22px;
+}
+
+.auth-form p { text-align: center; color: rgba(255,255,255,0.65); margin: 8px 0 0 0 }
+
+.auth-form input::placeholder { color: rgba(255,255,255,0.45) }
+
+@media (max-width: 520px) {
+  .auth-form { padding: 28px 18px; border-radius: 12px }
+}
