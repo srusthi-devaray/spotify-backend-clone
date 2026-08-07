@@ -15,7 +15,6 @@ async function createmusic(req, res) {
     title,
     artist: req.user.id,
   });
-
   return res.status(201).json({
     message: "music created successfully",
     music: {

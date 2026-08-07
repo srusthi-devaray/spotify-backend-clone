@@ -7,7 +7,6 @@ async function authartist(req, res, next) {
       message: "unauthorized",
     });
   }
-
   try {
     const decoded = jwt.verify(
       token,
