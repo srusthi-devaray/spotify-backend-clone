@@ -13,8 +13,12 @@ function Albums() {
 
   const fetchAlbums = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/music/getallalbum", { withCredentials: true });
+      const res = await axios.get(
+        `http://localhost:3000/api/music/getallalbum`,
+        { withCredentials: true },
+      );
       setAlbums(res.data.album || []);
+      console.log(res.data.album);
     } catch (error) {
       if (error.response?.status === 401 || error.response?.status === 403) {
         navigate("/login");
@@ -36,7 +40,11 @@ function Albums() {
       <div style={styles.container}>
         <h2>Albums</h2>
         <AlbumForm onCreated={fetchAlbums} />
-        {loading ? <Loader /> : albums.map((album) => <AlbumCard key={album._id} album={album} />)}
+        {loading ? (
+          <Loader />
+        ) : (
+          albums.map((album) => <AlbumCard key={album._id} album={album} />)
+        )}
       </div>
     </div>
   );

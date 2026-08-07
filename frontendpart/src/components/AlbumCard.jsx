@@ -5,7 +5,9 @@ function AlbumCard({ album }) {
     <div style={styles.card}>
       <h3>{album.title}</h3>
       <p>Artist: {album.artist?.username || "Unknown"}</p>
-      <Link to={`/albums/${album._id}`} style={styles.link}>View Details</Link>
+      <Link to={`/albums/${album._id}`} style={styles.link}>
+        View Details
+      </Link>
     </div>
   );
 }

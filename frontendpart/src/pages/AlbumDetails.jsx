@@ -13,7 +13,10 @@ function AlbumDetails() {
   useEffect(() => {
     const fetchAlbum = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/api/music/getallalbum/${albumId}`, { withCredentials: true });
+        const res = await axios.get(
+          `http://localhost:3000/api/music/getallalbum/${albumId}`,
+          { withCredentials: true },
+        );
         setAlbum(res.data.album);
       } catch (error) {
         if (error.response?.status === 401 || error.response?.status === 403) {
@@ -42,7 +45,9 @@ function AlbumDetails() {
             {album.musics?.map((music) => (
               <div key={music._id} style={styles.card}>
                 <h4>{music.title}</h4>
-                {music.uri ? <audio controls src={music.uri} style={{ width: "100%" }} /> : null}
+                {music.uri ? (
+                  <audio controls src={music.uri} style={{ width: "100%" }} />
+                ) : null}
               </div>
             ))}
           </>
@@ -55,7 +60,12 @@ function AlbumDetails() {
 const styles = {
   page: { minHeight: "100vh", background: "#121212" },
   container: { maxWidth: 900, margin: "0 auto", padding: 24, color: "white" },
-  card: { background: "#181818", padding: 16, borderRadius: 12, marginBottom: 12 },
+  card: {
+    background: "#181818",
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+  },
 };
 
 export default AlbumDetails;
